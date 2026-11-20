@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Truth Seller — Official Site</title>
+  <meta name="description" content="Official website of Truth Seller. Raw words. Hard history. No discounts on the truth." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Special+Elite&family=Archivo:wght@300;400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ============================================================
+       RESET & TOKENS
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:     #050505;
+      --coal:    #0c0c0c;
+      --soot:    #141414;
+      --ash:     #1d1d1d;
+      --smoke:   #8a8a8a;
+      --bone:    #e9e6df;
+      --paper:   #f3f1ec;
+      --white:   #ffffff;
+      --nav-h:   74px;
+
+      /* reusable textures */
+      --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      --erode: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='e'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -3.2 2.75'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23e)'/%3E%3C/svg%3E");
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--coal);
+      color: var(--bone);
+      font-family: 'Archivo', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* Film grain over everything */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: -50%;
+      width: 200%; height: 200%;
+      background-image: var(--noise);
+      opacity: .13;
+      pointer-events: none;
+      z-index: 9999;
+      animation: grain 1s steps(6) infinite;
+    }
+    @keyframes grain {
+      0%   { transform: translate(0,0); }
+      20%  { transform: translate(-3%,2%); }
+      40%  { transform: translate(2%,-4%); }
+      60%  { transform: translate(-4%,-1%); }
+      80%  { transform: translate(3%,3%); }
+      100% { transform: translate(0,0); }
+    }
+
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    ::selection { background: var(--white); color: var(--ink); }
+
+    /* distressed / eroded ink effect */
+    .rough {
+      -webkit-mask-image: var(--erode);
+              mask-image: var(--erode);
+      -webkit-mask-size: 300px 300px;
+              mask-size: 300px 300px;
+    }
+
+    /* ============================================================
+       NAV
+    ============================================================ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      z-index: 1000;
+      transition: background .35s ease, border-color .35s ease;
+      border-bottom: 1px solid transparent;
+    }
+    nav.solid {
+      background: rgba(5,5,5,.95);
+      border-bottom-color: rgba(255,255,255,.12);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .logo-mark {
+      font-family: 'Anton', sans-serif;
+      font-size: 15px;
+      line-height: 1;
+      padding: 6px 7px 5px;
+      background: var(--bone);
+      color: var(--ink);
+      letter-spacing: 1px;
+    }
+    .logo-word {
+      font-family: 'Anton', sans-serif;
+      font-size: 22px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 34px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.75);
+      padding: 4px 2px;
+      transition: color .2s, background .2s;
+    }
+    .nav-links a.active,
+    .nav-links a:hover { color: var(--ink); background: var(--bone); }
+
+    .nav-right { display: flex; align-items: center; gap: 20px; flex-shrink: 0; }
+    .nav-socials { display: flex; align-items: center; gap: 16px; }
+    .nav-socials a { color: rgba(255,255,255,.75); display: flex; transition: color .2s; }
+    .nav-socials a:hover { color: var(--white); }
+    .nav-socials svg { width: 17px; height: 17px; fill: currentColor; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--white); }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    #home {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 680px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      background: var(--ink);
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: -2%;
+      background: url('truthseller_hero_bw.jpg') 62% center / cover no-repeat;
+      filter: grayscale(1) contrast(1.08);
+      z-index: 0;
+      animation: flicker 7s infinite;
+    }
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      47% { opacity: 1; }
+      48% { opacity: .86; }
+      49% { opacity: 1; }
+      72% { opacity: .93; }
+      73% { opacity: 1; }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.35) 38%, rgba(0,0,0,0) 60%),
+        linear-gradient(to bottom, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 55%, rgba(0,0,0,.92) 100%);
+      z-index: 1;
+    }
+
+    /* old-film scratches */
+    .scratches {
+      position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background:
+        linear-gradient(90deg, transparent 17.2%, rgba(255,255,255,.18) 17.25%, transparent 17.32%),
+        linear-gradient(90deg, transparent 71.6%, rgba(255,255,255,.12) 71.64%, transparent 71.7%),
+        linear-gradient(90deg, transparent 43.1%, rgba(0,0,0,.5) 43.14%, transparent 43.2%);
+      animation: scratch .45s steps(3) infinite;
+    }
+    @keyframes scratch {
+      0%   { transform: translateX(0);   opacity: .9; }
+      33%  { transform: translateX(-9px); opacity: .4; }
+      66%  { transform: translateX(14px); opacity: .8; }
+      100% { transform: translateX(0);   opacity: .6; }
+    }
+
+    .hero-tag {
+      margin-bottom: 22px;
+      font-family: 'Special Elite', monospace;
+      font-size: clamp(13px, 1.2vw, 16px);
+      letter-spacing: 2px;
+      line-height: 1.9;
+      color: var(--white);
+      text-shadow: 0 0 12px #000, 0 0 4px #000, 0 2px 2px #000;
+    }
+    .hero-tag .strike { text-decoration: line-through; text-decoration-thickness: 2px; opacity: .9; }
+
+    .hero-bottom {
+      position: relative;
+      z-index: 3;
+      width: 100%;
+      padding: 0 60px 70px;
+    }
+
+    .hero-kicker {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      background: var(--bone);
+      color: var(--ink);
+      padding: 6px 12px 5px;
+      margin-bottom: 18px;
+      transform: rotate(-1.5deg);
+    }
+
+    .hero-name {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(64px, 13vw, 210px);
+      font-weight: 400;
+      line-height: .84;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 34px;
+    }
+    .hero-name span { display: block; }
+    .hero-name .outline {
+      color: transparent;
+      -webkit-text-stroke: 2px rgba(255,255,255,.9);
+    }
+
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+
+    .btn {
+      display: inline-block;
+      padding: 16px 38px 15px;
+      border: 2px solid var(--white);
+      background: var(--white);
+      color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .2s, color .2s, transform .2s;
+    }
+    .btn:hover { background: transparent; color: var(--white); transform: translate(-2px,-2px); box-shadow: 4px 4px 0 var(--white); }
+    .btn.ghost { background: transparent; color: var(--white); }
+    .btn.ghost:hover { background: var(--white); color: var(--ink); }
+
+    /* ============================================================
+       TICKER (gritty marquee)
+    ============================================================ */
+    .ticker {
+      background: var(--bone);
+      color: var(--ink);
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 14px 0 12px;
+      border-top: 3px solid var(--ink);
+      border-bottom: 3px solid var(--ink);
+      position: relative;
+      z-index: 5;
+    }
+    .ticker-track {
+      display: inline-block;
+      font-family: 'Anton', sans-serif;
+      font-size: 26px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      animation: marquee 32s linear infinite;
+    }
+    .ticker-track span { margin: 0 22px; }
+    .ticker-track .x { font-family: 'Special Elite', monospace; font-size: 22px; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ============================================================
+       SHARED
+    ============================================================ */
+    section { position: relative; }
+
+    .section-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--smoke);
+      margin-bottom: 14px;
+    }
+    .section-label::before { content: '// '; }
+
+    .section-heading {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(42px, 6.5vw, 92px);
+      font-weight: 400;
+      text-transform: uppercase;
+      line-height: .9;
+      letter-spacing: .5px;
+      color: var(--white);
+    }
+
+    .rule {
+      width: 100%; height: 6px; margin: 30px 0;
+      background:
+        repeating-linear-gradient(90deg, var(--bone) 0 14px, transparent 14px 20px);
+      opacity: .35;
+      max-width: 220px;
+    }
+
+    /* torn paper edge */
+    .torn-top::before {
+      content: '';
+      position: absolute;
+      top: -18px; left: 0; width: 100%; height: 20px;
+      background: inherit;
+      clip-path: polygon(0 100%,0 40%,3% 70%,6% 30%,9% 60%,12% 20%,15% 65%,19% 35%,22% 75%,26% 25%,29% 55%,33% 15%,36% 60%,40% 30%,43% 70%,47% 20%,50% 55%,54% 35%,57% 80%,61% 25%,64% 60%,68% 10%,71% 55%,75% 30%,78% 70%,82% 20%,85% 60%,89% 35%,92% 75%,96% 25%,100% 55%,100% 100%);
+    }
+
+    /* ============================================================
+       MUSIC
+    ============================================================ */
+    #music { background: var(--soot); padding: 120px 80px; }
+
+    .music-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .album-art-wrap { position: relative; transform: rotate(-1.2deg); }
+    .album-art-wrap::after {   /* tape strip */
+      content: '';
+      position: absolute;
+      top: -14px; left: 50%;
+      width: 130px; height: 30px;
+      transform: translateX(-50%) rotate(3deg);
+      background: rgba(233,230,223,.78);
+      box-shadow: 0 2px 6px rgba(0,0,0,.4);
+      z-index: 3;
+    }
+
+    .cover {
+      position: relative;
+      aspect-ratio: 1;
+      background: var(--ink);
+      overflow: hidden;
+      border: 10px solid var(--paper);
+      box-shadow: 0 30px 60px rgba(0,0,0,.6);
+    }
+    .cover-img {
+      position: absolute; inset: 0;
+      background: url('truthseller_hero_bw.jpg') 64% 30% / 260% auto no-repeat;
+      filter: grayscale(1) contrast(1.4) brightness(.9);
+    }
+    .cover-halftone {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(rgba(0,0,0,.55) 1px, transparent 1.6px);
+      background-size: 5px 5px;
+      mix-blend-mode: multiply;
+    }
+    .cover-title {
+      position: absolute;
+      left: 22px; right: 22px; bottom: 18px;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(34px, 4.5vw, 62px);
+      line-height: .88;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+    .cover-sticker {
+      position: absolute;
+      top: 20px; right: 18px;
+      font-family: 'Special Elite', monospace;
+      font-size: 12px;
+      letter-spacing: 1px;
+      background: var(--white);
+      color: var(--ink);
+      padding: 6px 9px;
+      transform: rotate(6deg);
+    }
+
+    .release-tag {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      border: 1px dashed rgba(255,255,255,.4);
+      padding: 6px 14px;
+      margin-bottom: 24px;
+    }
+    .music-info p {
+      font-size: 16px;
+      line-height: 1.85;
+      color: rgba(233,230,223,.72);
+      margin-bottom: 36px;
+      max-width: 460px;
+    }
+
+    .stream-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .stream-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 18px;
+      border: 1px solid rgba(255,255,255,.35);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--white);
+      transition: background .2s, color .2s;
+    }
+    .stream-pill svg { width: 15px; height: 15px; fill: currentColor; }
+    .stream-pill:hover { background: var(--white); color: var(--ink); }
+
+    /* Discography */
+    .disco-wrap {
+      max-width: 1200px;
+      margin: 110px auto 0;
+      padding-top: 60px;
+      border-top: 1px dashed rgba(255,255,255,.18);
+    }
+    .disco-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; gap: 20px; }
+    .disco-head h3 {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(30px, 3.6vw, 48px);
+      text-transform: uppercase;
+      color: var(--white);
+      line-height: 1;
+    }
+    .disco-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .disco-card { cursor: pointer; }
+    .disco-art {
+      position: relative;
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: var(--ink);
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    .disco-art .bg {
+      position: absolute; inset: 0;
+      background: url('truthseller_hero_bw.jpg') no-repeat;
+      filter: grayscale(1) contrast(1.5);
+      transition: transform .6s ease, filter .6s ease;
+    }
+    .disco-card:nth-child(1) .bg { background-position: 18% 30%; background-size: 300% auto; }
+    .disco-card:nth-child(2) .bg { background-position: 50% 92%; background-size: 260% auto; }
+    .disco-card:nth-child(3) .bg { background-position: 100% 20%; background-size: 320% auto; }
+    .disco-card:hover .bg { transform: scale(1.06); filter: grayscale(1) contrast(1.8) brightness(.7); }
+    .disco-art .label {
+      position: absolute; left: 16px; bottom: 14px; right: 16px;
+      font-family: 'Anton', sans-serif;
+      font-size: 34px; line-height: .9;
+      text-transform: uppercase; color: var(--white);
+      text-shadow: 0 2px 20px rgba(0,0,0,.8);
+    }
+    .disco-art .play {
+      position: absolute; top: 50%; left: 50%;
+      width: 62px; height: 62px;
+      transform: translate(-50%,-50%) scale(.8);
+      background: var(--white); color: var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: all .25s;
+    }
+    .disco-art .play svg { width: 20px; height: 20px; margin-left: 3px; }
+    .disco-card:hover .play { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+    .disco-info { padding: 16px 2px 0; display: flex; justify-content: space-between; align-items: baseline; }
+    .disco-title { font-family: 'Special Elite', monospace; font-size: 16px; letter-spacing: 1px; color: var(--white); }
+    .disco-meta { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--smoke); }
+
+    /* ============================================================
+       MANIFESTO / QUOTE STRIP
+    ============================================================ */
+    #manifesto {
+      background: var(--paper);
+      color: var(--ink);
+      padding: 120px 80px;
+      text-align: center;
+    }
+    #manifesto::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: var(--noise);
+      opacity: .35;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+    .manifesto-line {
+      position: relative; z-index: 1;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(40px, 7vw, 112px);
+      line-height: 1.02;
+      text-transform: uppercase;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .manifesto-line .hl {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 0 .12em;
+      -webkit-box-decoration-break: clone; box-decoration-break: clone;
+    }
+    .manifesto-sig {
+      position: relative; z-index: 1;
+      margin-top: 34px;
+      font-family: 'Special Elite', monospace;
+      font-size: 17px;
+      letter-spacing: 2px;
+    }
+
+    /* ============================================================
+       ABOUT
+    ============================================================ */
+    #about { background: var(--coal); padding: 120px 80px; }
+
+    .about-inner {
+      display: grid;
+      grid-template-columns: 1fr 440px;
+      gap: 80px;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .about-text p {
+      font-size: 16px;
+      line-height: 1.95;
+      color: rgba(233,230,223,.74);
+      margin-bottom: 22px;
+    }
+
+    .about-quote {
+      margin: 38px 0;
+      padding: 26px 28px;
+      background: var(--soot);
+      border-left: 6px solid var(--bone);
+      position: relative;
+    }
+    .about-quote blockquote {
+      font-family: 'Special Elite', monospace;
+      font-size: clamp(17px, 1.7vw, 22px);
+      line-height: 1.6;
+      color: var(--white);
+    }
+
+    .about-facts { margin-top: 38px; }
+    .about-fact {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      border-bottom: 1px dashed rgba(255,255,255,.14);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+    }
+    .about-fact-key { letter-spacing: 3px; text-transform: uppercase; color: var(--smoke); }
+    .about-fact-val { color: var(--white); text-align: right; }
+
+    .about-portrait { position: relative; transform: rotate(1.5deg); }
+    .polaroid {
+      background: var(--paper);
+      padding: 14px 14px 64px;
+      box-shadow: 0 30px 70px rgba(0,0,0,.7);
+      position: relative;
+    }
+    .polaroid .shot {
+      height: 560px;
+      background: url('truthseller_hero_bw.jpg') 66% 20% / auto 175% no-repeat;
+      filter: grayscale(1) contrast(1.25);
+    }
+    .polaroid .caption {
+      position: absolute;
+      left: 0; right: 0; bottom: 18px;
+      text-align: center;
+      font-family: 'Special Elite', monospace;
+      font-size: 18px;
+      color: var(--ink);
+      letter-spacing: 1px;
+    }
+    .about-portrait::before {
+      content: '';
+      position: absolute;
+      top: -12px; right: 40px;
+      width: 110px; height: 28px;
+      background: rgba(233,230,223,.7);
+      transform: rotate(-6deg);
+      z-index: 2;
+    }
+
+    /* ============================================================
+       CONTACT
+    ============================================================ */
+    #contact { background: var(--soot); padding: 120px 80px; }
+
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+      align-items: start;
+    }
+    .contact-info p { font-size: 16px; line-height: 1.85; color: rgba(233,230,223,.72); margin: 0 0 36px; }
+
+    .contact-details { display: flex; flex-direction: column; gap: 20px; }
+    .contact-detail-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--smoke);
+      margin-bottom: 4px;
+    }
+    .contact-detail-val { font-family: 'Special Elite', monospace; font-size: 17px; color: var(--white); }
+
+    .contact-form {
+      display: flex; flex-direction: column; gap: 18px;
+      background: var(--coal);
+      border: 1px solid rgba(255,255,255,.1);
+      padding: 36px;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--smoke);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid rgba(255,255,255,.25);
+      color: var(--white);
+      font-family: 'Special Elite', monospace;
+      font-size: 16px;
+      padding: 10px 2px;
+      outline: none;
+      transition: border-color .2s;
+      width: 100%;
+      border-radius: 0;
+    }
+    .form-group select option { background: var(--coal); }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--white); }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(255,255,255,.28); }
+    .form-group select { appearance: none; cursor: pointer; }
+    .form-group textarea { min-height: 120px; resize: vertical; }
+    #form-ok { display: none; font-family: 'Special Elite', monospace; font-size: 15px; color: var(--white); }
+
+    /* ============================================================
+       MAILING BANNER
+    ============================================================ */
+    .mail-banner {
+      position: relative;
+      background: var(--ink);
+      padding: 110px 80px;
+      text-align: center;
+      overflow: hidden;
+      border-top: 3px solid var(--bone);
+    }
+    .mail-banner .ghost-word {
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%,-50%);
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(120px, 26vw, 380px);
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,.07);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .mail-banner h2 {
+      position: relative;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(38px, 5vw, 70px);
+      text-transform: uppercase;
+      line-height: .95;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+    .mail-banner p { position: relative; font-size: 15px; color: rgba(233,230,223,.65); margin-bottom: 38px; }
+    .mail-form { position: relative; display: flex; max-width: 520px; margin: 0 auto; }
+    .mail-form input {
+      flex: 1;
+      background: var(--paper);
+      border: 2px solid var(--paper);
+      color: var(--ink);
+      font-family: 'Special Elite', monospace;
+      font-size: 16px;
+      padding: 15px 18px;
+      outline: none;
+      border-radius: 0;
+    }
+    .mail-form input::placeholder { color: rgba(0,0,0,.45); }
+    .mail-form button {
+      padding: 15px 26px;
+      background: var(--ink);
+      color: var(--white);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      border: 2px solid var(--paper);
+      cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+    .mail-form button:hover { background: var(--paper); color: var(--ink); }
+    .mail-done { position: relative; font-family: 'Special Elite', monospace; font-size: 17px; color: var(--white); }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      background: var(--ink);
+      border-top: 1px dashed rgba(255,255,255,.18);
+      padding: 64px 80px 28px;
+    }
+    .footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 40px; margin-bottom: 50px; }
+    .footer-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 46px; line-height: .9;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 16px;
+      display: block;
+    }
+    .footer-tagline { font-family: 'Special Elite', monospace; font-size: 14px; line-height: 1.7; color: var(--smoke); max-width: 280px; }
+    .footer-col h4 {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--smoke);
+      margin-bottom: 18px;
+    }
+    .footer-nav-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-nav-list a {
+      font-family: 'Anton', sans-serif;
+      font-size: 20px; letter-spacing: 1px; text-transform: uppercase;
+      color: var(--bone);
+      transition: color .2s, padding-left .2s;
+    }
+    .footer-nav-list a:hover { color: var(--white); padding-left: 8px; }
+    .footer-socials { display: flex; gap: 10px; }
+    .footer-socials a {
+      width: 42px; height: 42px;
+      border: 1px solid rgba(255,255,255,.3);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--bone);
+      transition: all .2s;
+    }
+    .footer-socials a:hover { background: var(--white); color: var(--ink); }
+    .footer-socials svg { width: 16px; height: 16px; fill: currentColor; }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 22px;
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    }
+    .footer-bottom p { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: rgba(255,255,255,.35); letter-spacing: 1.5px; }
+
+    /* ============================================================
+       REVEAL
+    ============================================================ */
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      body::after, .hero-bg, .scratches, .ticker-track { animation: none; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 1024px) {
+      .music-inner, .about-inner, .contact-inner { grid-template-columns: 1fr; gap: 56px; }
+      .about-portrait { max-width: 440px; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links {
+        position: fixed;
+        top: var(--nav-h); left: 0; width: 100%; height: calc(100vh - var(--nav-h));
+        background: rgba(5,5,5,.98);
+        flex-direction: column;
+        justify-content: center;
+        gap: 30px;
+        transform: translateX(-100%);
+        transition: transform .4s ease;
+      }
+      .nav-links.open { transform: translateX(0); }
+      .nav-links a { font-size: 16px; }
+      .hamburger { display: flex; }
+      .nav-socials { display: none; }
+        .hero-bottom { padding: 0 24px 56px; }
+      .hero-bg { background-position: 68% center; }
+      .hero-overlay { background: linear-gradient(to bottom, rgba(0,0,0,.5) 0%, rgba(0,0,0,0) 25%, rgba(0,0,0,.35) 45%, rgba(0,0,0,.92) 75%); }
+      .hero-name { font-size: 96px; }
+      #music, #about, #contact, #manifesto { padding: 90px 24px; }
+      .disco-grid { grid-template-columns: 1fr; gap: 36px; }
+      .disco-head { flex-direction: column; align-items: flex-start; }
+      .form-row { grid-template-columns: 1fr; }
+      .contact-form { padding: 24px; }
+      .polaroid .shot { height: 420px; }
+      footer { padding: 52px 24px 22px; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+      .mail-banner { padding: 80px 24px; }
+      .mail-form { flex-direction: column; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAV
+============================================================ -->
+<nav id="nav">
+  <a href="#home" class="logo" aria-label="Truth Seller home">
+    <span class="logo-mark">TS</span>
+    <span class="logo-word">Truth Seller</span>
+  </a>
+
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#home" class="active" data-section="home">Home</a></li>
+    <li><a href="#music" data-section="music">Music</a></li>
+    <li><a href="#about" data-section="about">About</a></li>
+    <li><a href="#contact" data-section="contact">Contact</a></li>
+  </ul>
+
+  <div class="nav-right">
+    <div class="nav-socials">
+      <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+      <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></a>
+      <a href="#" aria-label="Spotify"><svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg></a>
+      <a href="#" aria-label="Apple Music"><svg viewBox="0 0 24 24"><path d="M23.994 6.124a9.23 9.23 0 0 0-.24-2.19c-.317-1.31-1.064-2.31-2.22-3.01a5.022 5.022 0 0 0-1.61-.64c-.67-.13-1.34-.17-2.01-.17H5.99c-.67 0-1.34.04-2.01.17A5.022 5.022 0 0 0 2.37.904C1.21 1.604.464 2.604.147 3.934a9.23 9.23 0 0 0-.24 2.19C-.002 6.734-.01 7.334-.01 8.124v7.75c0 .79.007 1.39.143 1.997.317 1.31 1.063 2.31 2.22 3.01.49.3 1.04.5 1.61.64.67.13 1.34.17 2.01.17h12.054c.67 0 1.34-.04 2.01-.17.57-.14 1.12-.34 1.61-.64 1.157-.7 1.903-1.7 2.22-3.01.136-.607.143-1.207.143-1.997V8.124c0-.79-.007-1.39-.017-2zm-6.49 8.934h-1.37v-5.73l-3.65 5.73H11.1V9.754h1.37v5.71l3.64-5.71h1.394v5.304z"/></svg></a>
+    </div>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="scratches"></div>
+
+  <div class="hero-bottom">
+    <div class="hero-tag">
+      <span class="strike">Comfortable lies.</span><br>
+      Uncomfortable truth. No refunds.
+    </div>
+    <span class="hero-kicker">Purpose Wave Entertainment</span>
+    <h1 class="hero-name rough">
+      <span>Truth</span>
+      <span class="outline">Seller</span>
+    </h1>
+    <div class="hero-actions">
+      <a href="#music" class="btn">Listen Now</a>
+      <a href="#about" class="btn ghost">The Story</a>
+    </div>
+  </div>
+</section>
+
+<!-- Ticker -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>Truth Seller</span><span class="x">✕</span><span>Real Words</span><span class="x">✕</span><span>Hard History</span><span class="x">✕</span><span>No Discounts</span><span class="x">✕</span><span>Faith Over Fear</span><span class="x">✕</span>
+    <span>Truth Seller</span><span class="x">✕</span><span>Real Words</span><span class="x">✕</span><span>Hard History</span><span class="x">✕</span><span>No Discounts</span><span class="x">✕</span><span>Faith Over Fear</span><span class="x">✕</span>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     MUSIC
+============================================================ -->
+<section id="music">
+  <div class="music-inner reveal">
+    <div class="album-art-wrap">
+      <div class="cover">
+        <div class="cover-img"></div>
+        <div class="cover-halftone"></div>
+        <div class="cover-sticker">NEW</div>
+        <div class="cover-title rough">Latest<br>Release</div>
+      </div>
+    </div>
+    <div class="music-info">
+      <p class="section-label">Latest Release</p>
+      <h2 class="section-heading rough">Album<br>Title Here</h2>
+      <div class="rule"></div>
+      <span class="release-tag">Album · 2026</span>
+      <p>Bars pulled from the pages most people skip. Truth Seller digs into history, faith, and the stories this country tried to shelve — and sells them back to you at full price. No sugar. No filter. Just the record, set straight.</p>
+      <div class="stream-row">
+        <a href="#" target="_blank" class="stream-pill">
+          <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+          Spotify
+        </a>
+        <a href="#" target="_blank" class="stream-pill">
+          <svg viewBox="0 0 24 24"><path d="M23.994 6.124a9.23 9.23 0 0 0-.24-2.19c-.317-1.31-1.064-2.31-2.22-3.01a5.022 5.022 0 0 0-1.61-.64c-.67-.13-1.34-.17-2.01-.17H5.99c-.67 0-1.34.04-2.01.17A5.022 5.022 0 0 0 2.37.904C1.21 1.604.464 2.604.147 3.934a9.23 9.23 0 0 0-.24 2.19C-.002 6.734-.01 7.334-.01 8.124v7.75c0 .79.007 1.39.143 1.997.317 1.31 1.063 2.31 2.22 3.01.49.3 1.04.5 1.61.64.67.13 1.34.17 2.01.17h12.054c.67 0 1.34-.04 2.01-.17.57-.14 1.12-.34 1.61-.64 1.157-.7 1.903-1.7 2.22-3.01.136-.607.143-1.207.143-1.997V8.124c0-.79-.007-1.39-.017-2zm-6.49 8.934h-1.37v-5.73l-3.65 5.73H11.1V9.754h1.37v5.71l3.64-5.71h1.394v5.304z"/></svg>
+          Apple Music
+        </a>
+        <a href="#" target="_blank" class="stream-pill">
+          <svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+          YouTube
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Discography -->
+  <div class="disco-wrap reveal">
+    <div class="disco-head">
+      <div>
+        <p class="section-label">Discography</p>
+        <h3 class="rough">The Catalog</h3>
+      </div>
+      <a href="#" class="btn ghost">All Releases</a>
+    </div>
+    <div class="disco-grid">
+      <div class="disco-card">
+        <div class="disco-art">
+          <div class="bg"></div>
+          <div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+          <div class="label rough">Release<br>One</div>
+        </div>
+        <div class="disco-info"><span class="disco-title">Release One</span><span class="disco-meta">Album · 2026</span></div>
+      </div>
+      <div class="disco-card">
+        <div class="disco-art">
+          <div class="bg"></div>
+          <div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+          <div class="label rough">Release<br>Two</div>
+        </div>
+        <div class="disco-info"><span class="disco-title">Release Two</span><span class="disco-meta">Single · 2026</span></div>
+      </div>
+      <div class="disco-card">
+        <div class="disco-art">
+          <div class="bg"></div>
+          <div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+          <div class="label rough">Release<br>Three</div>
+        </div>
+        <div class="disco-info"><span class="disco-title">Release Three</span><span class="disco-meta">Single · 2025</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     MANIFESTO
+============================================================ -->
+<section id="manifesto" class="torn-top">
+  <p class="manifesto-line reveal">The truth was never <span class="hl">free.</span> Somebody always paid for it.</p>
+  <p class="manifesto-sig reveal">— Truth Seller</p>
+</section>
+
+
+<!-- ============================================================
+     ABOUT
+============================================================ -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-text reveal">
+      <p class="section-label">The Artist</p>
+      <h2 class="section-heading rough">Selling What<br>They Won't Say</h2>
+      <div class="rule"></div>
+      <p>Truth Seller is a voice built for the conversations people avoid. With a Bible open on the desk and the history books nobody finished on the shelf, every verse is a receipt — tracing where we came from, what it cost, and what we still owe each other.</p>
+      <p>The sound is raw and unpolished on purpose. Heavy drums, dusty samples, and lyrics written like testimony. This isn't music for the background. It's music that sits across the table and looks you in the eye.</p>
+      <div class="about-quote">
+        <blockquote>"I don't sell comfort. I sell truth — and the price never goes down."</blockquote>
+      </div>
+      <p>Released under Purpose Wave Entertainment, Truth Seller joins a roster of artists using new tools to tell old, unfinished stories.</p>
+      <div class="about-facts">
+        <div class="about-fact"><span class="about-fact-key">Label</span><span class="about-fact-val">Purpose Wave Entertainment</span></div>
+        <div class="about-fact"><span class="about-fact-key">Genre</span><span class="about-fact-val">Conscious Hip-Hop / Soul</span></div>
+        <div class="about-fact"><span class="about-fact-key">Themes</span><span class="about-fact-val">Faith · History · Truth</span></div>
+        <div class="about-fact"><span class="about-fact-key">Booking</span><span class="about-fact-val">Via Contact Form Below</span></div>
+      </div>
+    </div>
+    <div class="about-portrait reveal">
+      <div class="polaroid">
+        <div class="shot" role="img" aria-label="Truth Seller portrait"></div>
+        <div class="caption">truth seller — the study</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CONTACT
+============================================================ -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-info reveal">
+      <p class="section-label">Get in Touch</p>
+      <h2 class="section-heading rough">Contact &amp;<br>Booking</h2>
+      <div class="rule"></div>
+      <p>Bookings, press, features, or a word from the people — send it through. Every message gets read.</p>
+      <div class="contact-details">
+        <div><div class="contact-detail-label">General</div><div class="contact-detail-val">info@truthseller.com</div></div>
+        <div><div class="contact-detail-label">Booking</div><div class="contact-detail-val">booking@truthseller.com</div></div>
+        <div><div class="contact-detail-label">Press &amp; Media</div><div class="contact-detail-val">press@truthseller.com</div></div>
+        <div><div class="contact-detail-label">Label</div><div class="contact-detail-val">Purpose Wave Entertainment</div></div>
+      </div>
+    </div>
+
+    <form class="contact-form reveal" onsubmit="submitForm(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="fn">First Name</label>
+          <input id="fn" type="text" placeholder="First" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ln">Last Name</label>
+          <input id="ln" type="text" placeholder="Last" required />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="em">Email</label>
+        <input id="em" type="email" placeholder="your@email.com" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="subj">Subject</label>
+        <select id="subj">
+          <option value="" disabled selected>Select a subject</option>
+          <option>Booking Inquiry</option>
+          <option>Press / Media</option>
+          <option>Feature / Collaboration</option>
+          <option>Fan Message</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="msg">Message</label>
+        <textarea id="msg" placeholder="Say it plain..." required></textarea>
+      </div>
+      <button type="submit" class="btn" style="align-self:flex-start">Send Message</button>
+      <p id="form-ok">Received. We'll be in touch.</p>
+    </form>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     MAILING LIST
+============================================================ -->
+<div class="mail-banner">
+  <div class="ghost-word">TRUTH</div>
+  <p class="section-label" style="position:relative">Stay Connected</p>
+  <h2 class="rough">Get the Truth<br>First</h2>
+  <p>New music, unreleased verses, and show dates — straight to your inbox.</p>
+  <form class="mail-form" id="mail-form" onsubmit="submitMail(event)">
+    <input type="email" placeholder="Enter your email address" required />
+    <button type="submit">Subscribe</button>
+  </form>
+</div>
+
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <span class="footer-logo rough">Truth<br>Seller</span>
+      <p class="footer-tagline">Real words. Hard history.<br>No discounts on the truth.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul class="footer-nav-list">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#music">Music</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Follow</h4>
+      <div class="footer-socials">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></a>
+        <a href="#" aria-label="Spotify"><svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 Truth Seller. All Rights Reserved.</p>
+    <p>Purpose Wave Entertainment</p>
+  </div>
+</footer>
+
+
+<script>
+  // Nav solid on scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('solid', window.scrollY > 80));
+
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('nav-links');
+  hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // Active nav link on scroll
+  const navAs = document.querySelectorAll('.nav-links a[data-section]');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) navAs.forEach(a => a.classList.toggle('active', a.dataset.section === e.target.id));
+    });
+  }, { threshold: 0.35 });
+  document.querySelectorAll('section[id]').forEach(s => io.observe(s));
+
+  // Reveal on scroll
+  const rio = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => rio.observe(el));
+
+  // Form handlers
+  function submitForm(e) {
+    e.preventDefault();
+    document.getElementById('form-ok').style.display = 'block';
+    e.target.reset();
+  }
+  function submitMail(e) {
+    e.preventDefault();
+    e.currentTarget.outerHTML = '<p class="mail-done">You\'re on the list. Truth is on the way.</p>';
+  }
+</script>
+</body>
+</html>
